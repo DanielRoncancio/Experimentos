@@ -1,0 +1,44 @@
+
+//aplicar plugins al proyecto, funcionalidades que no trae por defecto el proyecto
+apply plugin: 'java'
+apply plugin: 'idea' // compatibilidad con intellij
+apply plugin: 'net.serenity-bdd.aggregator' // ayuda a generar el reporte, sereniti es un envoltorio de selenium para web, apium para movil y rest assurd
+// Gradle: es una aplicativo que ayuda en la contruccion de proyectos, graddle automatiza procesos y tareas relacionados a la contruccion de un proyecto ej : el ejemplo mas 
+// tipico es la definicion de gradle segun los automatizadores = Gestor de dependencias
+
+
+repositories { // indicar en que repositorios va a buscar las librerias
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+}
+
+buildscript { // Donde se aplican pluggins y configuracions directamente desde gradle que se usan en el proyecto
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath("net.serenity-bdd:serenity-gradle-plugin:1.9.20") // serenity sea compatible con gradle
+    }
+}
+
+ext{
+    serenityVersion = '1.9.20'          // versiones controladas
+    serenityCucumberVersion = '1.9.8'
+}
+
+dependencies { 
+    testImplementation "net.serenity-bdd:serenity-core:$rootProject.ext.serenityVersion" // tiene todas las herramientas gruesas de serenity
+    testImplementation "net.serenity-bdd:serenity-junit:$rootProject.ext.serenityVersion" // integracion para ejecutar las pruebas con junit
+    implementation "net.serenity-bdd:serenity-screenplay:$rootProject.ext.serenityVersion" // contiene las clases para poder utilizar el patron screenplay con serenity
+    implementation "net.serenity-bdd:serenity-cucumber:$rootProject.ext.serenityCucumberVersion" // integracion entre serenity y cucumber
+    implementation "net.serenity-bdd:serenity-screenplay-rest:$rootProject.ext.serenityVersion" // integracion entre serenity y rest assured
+
+    testImplementation 'junit:junit:4.12' // utilice junit para ejecutar las pruebas
+    testImplementation 'org.assertj:assertj-core:3.8.0' // para hacer validaciones
+    testImplementation 'org.slf4j:slf4j-simple:1.7.21' // logger = herramientas con las que uno loguea
+}
+
+gradle.startParameter.continueOnFailure = true // le dice a gradle que continue asi falle alguna de sus tareas
