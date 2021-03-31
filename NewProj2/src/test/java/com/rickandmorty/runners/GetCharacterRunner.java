@@ -8,7 +8,8 @@ import org.junit.runner.RunWith;
 // Son parametros de configuracion de ejecucion del runner
 @CucumberOptions(features="src\\test\\resources\\com\\rickandmorty\\features\\GetCharacter.feature", 
         glue="com.rickandmorty.stepdefinitions",
-        snippets= SnippetType.CAMELCASE)
+        snippets= SnippetType.CAMELCASE,
+        tags= "@MulpiplesIds")
 
 public class GetCharacterRunner {
 

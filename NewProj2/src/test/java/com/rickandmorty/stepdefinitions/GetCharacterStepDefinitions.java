@@ -13,9 +13,12 @@ import static net.serenitybdd.screenplay.actors.OnStage.theActorCalled;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
 import static net.serenitybdd.screenplay.rest.questions.ResponseConsequence.seeThatResponse;
 
+import java.util.List;
+
 import org.hamcrest.Matchers;
 
 import com.rickandmorty.tasks.GetCharacterById;
+import com.rickandmorty.tasks.GetCharacterByMultiplesId;
 
 public class GetCharacterStepDefinitions {
 
@@ -36,14 +39,22 @@ public class GetCharacterStepDefinitions {
 	public void heVerifiesTheStatusCodeIs(String code) throws Exception {
 		theActorInTheSpotlight().should(seeThatResponse("The status code should be "+ code ,
                 response -> response.statusCode(Integer.parseInt(code))
-                .body("origin.name", Matchers.equalTo("unknown"))
+                //.body("origin.name", Matchers.equalTo("unknown"))
                 ));
-		System.out.println(SerenityRest.lastResponse().asString());
+		//System.out.println(SerenityRest.lastResponse().asString());
 	
 	}
 	@Then("^he verifies the name is \"([^\"]*)\"$")
 	public void heVerifiesTheNameIs(String name) throws Exception {
 	    theActorInTheSpotlight().should(seeThatResponse("the name should be "+ name,
 	           response -> response.body("name", Matchers.equalTo(name))));
+	}
+	@When("^he asks for the charater with id \"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\",\"([^\"]*)\"$")
+	public void heAsksForTheCharaterWithId(String uno, String dos, String tres, String cuatro) throws Exception {
+	    //theActorInTheSpotlight().attemptsTo(GetCharacterByMultiplesId.withNumber(uno, dos, tres, cuatro));
+	}
+	@When("^he asks for the charater with id$")
+	public void heAsksForTheCharaterWithId(List<String> listaIds) throws Exception {
+		theActorInTheSpotlight().attemptsTo(GetCharacterByMultiplesId.withNumber(listaIds));
 	}
 }
